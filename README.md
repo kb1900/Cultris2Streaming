@@ -8,6 +8,6 @@ Python3, Pyautogui
 
 # To do:
 * Refactoring of code (quite messy at the moment)
-* Minimize pyautogui automation -> use a new method to communicate with OBS
+* Minimize pyautogui automation -> use a new method to start/stop stream with OBS (current method uses coords and a simulated mouse click)
 * Create a hierarchy of what to stream and when (i.e. If there are >5 players in FFA and user is offline, stream FFA. Else, wait for user to be online)
 * Create a second C2 instance to display stats on stream 24/7 (should just be some c+p)
