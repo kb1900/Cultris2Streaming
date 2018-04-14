@@ -1,6 +1,7 @@
 import pyautogui
 import os
 import time
+from web import Web
 
 class Game():
 	@staticmethod
@@ -18,6 +19,58 @@ class Game():
 		pyautogui.press('right')  # press the Rightarrow key
 		pyautogui.press('enter')  # press the Enter key
 		pyautogui.press('enter')  # press the Enter key
+
+	@staticmethod
+	def find_correct_room(roomid):
+		Game.startup_login()
+		finding_player_room = True
+		down_count = 4
+		while finding_player_room = True:
+			if roomid == 0:
+				Game.ffa() #bot enters FFA and F4's
+				if Game.is_correct_room() == True:
+					print('success, recording bot is in the correct room.')
+					finding_player_room = False
+			else:
+				Game.enter_room(down_count)
+
+			if Game.is_correct_room() == True:
+				print('success, recording bot is in the correct room.')
+				finding_player_room = False
+
+			else:
+				down_count = down_count+1
+				Game.exitroom()
+		return True
+
+
+	@staticmethod
+	def is_correct_room():
+		values = Web.get_web_data()
+		players_online = []
+		rooms = []
+
+		for room in values['rooms']:
+			rooms.append(room['id'])
+			rooms.append(room['name'])
+
+		for player in values['players']:
+			players_online.append(player['name'])
+			players_online.append(player['room'])
+			players_online.append(player['afk'])
+
+		#we are requering the web data such that we can confirm the bot and the player are in the same room - shuld be refactored
+		status = Web.check_player_status(player_name='кв σғ υsα',players_online=players_online,rooms=rooms)
+		roomid = status[1]
+		bot_status = Web.check_player_status(player_name='recording',players_online=players_online,rooms=rooms)
+		bot_online_status = bot_status[0]
+		bot_roomid = bot_status[1]
+
+		#check if room is correct
+		if roomid == bot_roomid:
+			return True
+		else:
+			return False
 
 
 	@staticmethod
