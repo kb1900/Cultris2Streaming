@@ -2,13 +2,23 @@ import pyautogui
 import os
 import time
 from web import Web
+from pywinauto import Application
+import win32ui
+
+
+
 
 class Game():
 	@staticmethod
 	def startup_login():
 		#openc2
-		os.startfile("C:\Program Files (x86)\Cultris II\Cultris II.exe")
-		time.sleep(20)
+		try:
+			if win32ui.FindWindow("LWJGL", None):
+				print("its running")
+		except win32ui.error:
+			print("its not running!")
+			os.startfile("C:\Program Files (x86)\Cultris II\Cultris II.exe")
+		time.sleep(25)
 
 		pyautogui.press('enter')  # press the Enter key
 		pyautogui.press('enter')  # press the Enter key
@@ -20,18 +30,23 @@ class Game():
 		pyautogui.press('enter')  # press the Enter key
 		pyautogui.press('enter')  # press the Enter key
 
+		return True
 	@staticmethod
 	def find_correct_room(roomid):
-		Game.startup_login()
+		app = Application().connect(class_name="LWJGL")
+		app.top_window().set_focus()
+
 		finding_player_room = True
-		down_count = 4
-		while finding_player_room = True:
+		down_count = 3
+		print('finding correct room')
+		while finding_player_room == True:
 			if roomid == 0:
 				Game.ffa() #bot enters FFA and F4's
 				if Game.is_correct_room() == True:
 					print('success, recording bot is in the correct room.')
 					finding_player_room = False
 			else:
+				print('player not in ffa, finding room...')
 				Game.enter_room(down_count)
 
 			if Game.is_correct_room() == True:
